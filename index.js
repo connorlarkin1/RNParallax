@@ -9,11 +9,14 @@ import {
   Dimensions,
   StatusBar,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import { createImageProgress } from 'react-native-image-progress';
+import ProgressBar from 'react-native-progress/Bar';
 
 const {
   height: SCREEN_HEIGHT,
 } = Dimensions.get('window');
-
+const AnimatedImage = Animated.createAnimatedComponent(createImageProgress(FastImage));
 const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
 const STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? (IS_IPHONE_X ? 44 : 20) : 0;
 const NAV_BAR_HEIGHT = Platform.OS === 'ios' ? (IS_IPHONE_X ? 88 : 64) : 64;
@@ -195,7 +198,7 @@ class RNParallax extends Component {
     const imageScale = this.getImageScale();
 
     return (
-      <Animated.Image
+      <AnimatedImage
         style={[
           styles.backgroundImage,
           {
@@ -204,6 +207,7 @@ class RNParallax extends Component {
             transform: [{ translateY: imageTranslate }, { scale: imageScale }],
           },
         ]}
+        indicator={ProgressBar}
         source={backgroundImage}
       />
     );
